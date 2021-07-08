@@ -111,7 +111,7 @@ class App extends Component {
             <div>
                 <nav>
                     <div className="nav-wrapper purple darken-4">
-                        <a href="#!" class="brand-logo">Seminario</a>
+                        <a href="#!" class="brand-logo">NOTES</a>
                     </div>
                 </nav>
 
@@ -119,7 +119,7 @@ class App extends Component {
                     <div className="row">
                         <div className="col s5">
                             <form action="post" onSubmit={this.enviarDatos}>
-                                <h6 className="white-text">Cargar Informacion</h6>
+                                <h6 className="white-text">Cargar Notas</h6>
                                 <input placeholder="Ingresar titulo" className="indigo-text input-field" name="title" onChange={(e) => this.handleChange(e)} />
                                 <textarea placeholder="Ingresar descripcion" className="indigo-text" name="description" onChange={(e) => this.handleChange(e)} />
                                 <button type="submit" className="waves-effect waves-light  btn-small"><i className="material-icons right">send</i>Enviar</button>
