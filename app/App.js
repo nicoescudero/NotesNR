@@ -1,6 +1,4 @@
-//import { json } from 'express';
-import React, { Component, useState } from 'react';
-
+import React, { Component } from 'react';
 
 class App extends Component {
     constructor() {
@@ -14,9 +12,10 @@ class App extends Component {
         this.enviarDatos = this.enviarDatos.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
+
     //  POST DATA
     enviarDatos(e) {
-        if (this.state._id) {//actualiza los datos
+        if (this.state._id) {//realiza accion put
             fetch(`/task/${this.state._id}`, {
                 method: 'PUT',
                 body: JSON.stringify(this.state),
@@ -27,33 +26,35 @@ class App extends Component {
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data);
-                    M.toast({ html: 'task updated' });
+                    M.toast({ html: 'Task Updated' });
                     this.setState({ title: '', description: '', _id: '' });
+                    e.target.reset();
                     this.obtenerDatos();
                 })
-        } else {//realiza el envio
-            fetch('/task', {
-                method: 'POST',
-                body: JSON.stringify(this.state),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(res => {
-                    console.log(res);
-                    M.toast({ html: 'Note Saved' });
-                    this.obtenerDatos();
+        } else {//realiza accion post
+            if ((this.state.title === '') || (this.state.description === ''))
+                M.toast({ html: 'Load the form' })
+            else {
+                fetch('/task', {
+                    method: 'POST',
+                    body: JSON.stringify(this.state),
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
                 })
-                .catch(err => console.log(err));
-
+                    .then(res => {
+                        M.toast({ html: 'Note Saved' });
+                        this.obtenerDatos();
+                    })
+                    .catch(err => console.log(err));
+            }
             e.target.reset();
         }
-
         e.preventDefault();
     }
 
+    //Almacena los datos de las entradas del del formulario
     handleChange(e) {
         const { name, value } = e.target;
         this.setState({
@@ -61,16 +62,16 @@ class App extends Component {
         })
     }
 
-    componentDidMount() {//este metodo se ejecuta a penas se carga la pagina
+    componentDidMount() {//este metodo se ejecuta cuando se carga la pagina
         this.obtenerDatos();
     }
+
     //GET DATA
     obtenerDatos() {
         fetch('/task')
             .then(res => res.json())
             .then(data => {
                 this.setState({ tareas: data })
-                console.log(tareas);
             });
     }
 
@@ -87,21 +88,22 @@ class App extends Component {
                 .then(res => res.json())
                 .then(data => {
                     console.log(data);
-                    M.toast({ html: 'task deleted' });
+                    M.toast({ html: 'Task Deleted' });
                     this.obtenerDatos();
                 })
         }
     }
+
     //UPDATE ROW
     updateRow(id) {
         fetch(`/task/${id}`)
             .then(res => res.json())
             .then(data => {
-                console.log(data);
+                M.toast({ html: 'Insert new data' });
                 this.setState({
+                    _id: data._id,
                     title: data.title,
-                    description: data.description,
-                    _id: data._id
+                    description: data.description
                 })
             });
     }
