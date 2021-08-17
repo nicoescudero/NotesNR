@@ -1,2 +1,2 @@
 # NotesNR
-Este es un CRUD con MERN
+CRUD de notas con MERN
